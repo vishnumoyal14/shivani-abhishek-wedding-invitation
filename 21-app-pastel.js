@@ -228,7 +228,7 @@ window.addEventListener("load",function(){
   var tl=gsap.timeline({scrollTrigger:{
     trigger:"#events",start:"top top",end:"bottom bottom",scrub:.5,
     onUpdate:function(self){
-      var t=tl?tl.time():self.progress*TOTAL;
+      var t=self.progress*TOTAL;
       var phase=Math.max(0,t-ENTRY);
       var ix=t<ENTRY?0:Math.min(N-1,Math.floor(phase/UNIT)+(phase%UNIT>=LIFT?1:0));
       setActive(ix);
@@ -270,4 +270,3 @@ window.addEventListener("load",function(){
     scrollTrigger:{trigger:"#venue",start:"top 70%"}});
 });
 })();
-
