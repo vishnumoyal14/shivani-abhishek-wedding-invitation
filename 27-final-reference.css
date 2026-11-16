@@ -16,3 +16,4 @@
 @media(max-aspect-ratio:1/1){.portrait-room{background-image:url('./assets/25-room-red-gold.webp');background-size:100% 100%}}
 
 .temple-framing{display:none;position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;opacity:0}@media(max-aspect-ratio:1/1){.temple-framing{display:block}}
+@media(min-width:701px) and (max-aspect-ratio:1/1){.card{width:min(65vw,480px);height:min(87vw,645px,72svh)}.card-title{font-size:39px}.lang-hi .card-title{font-size:32px}.card-when,.card-venue{font-size:11px;line-height:1.6}.lang-hi .card-when,.lang-hi .card-venue{font-size:11px;line-height:1.7}.card-text{bottom:5%;gap:5px}}
