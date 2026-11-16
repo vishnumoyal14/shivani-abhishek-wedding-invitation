@@ -49,9 +49,10 @@ section,header{position:relative}
 .petals i{position:absolute;top:-4vh;width:14px;height:11px;border-radius:60% 40% 60% 40%;background:radial-gradient(circle at 30% 30%,#ffb27d,#e2603f);opacity:.85;animation:fall linear infinite}
 @keyframes fall{to{transform:translateY(112vh) rotate(340deg)}}
 
-/* ---------- 2. temple scene ---------- */
-.temple{height:110dvh;min-height:600px;overflow:hidden}
-.temple-art{position:absolute;inset:0;width:100%;height:112%;object-fit:cover}
+/* ---------- 2. temple scene : rises and grows from the sky ---------- */
+.temple{height:210dvh}
+.temple-sticky{position:sticky;top:0;height:100dvh;min-height:560px;overflow:hidden;background:linear-gradient(#6ec1f6,#a5d9fb)}
+.temple-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:50% 100%;-webkit-mask-image:radial-gradient(150% 130% at 50% 100%,#000 68%,transparent 93%);mask-image:radial-gradient(150% 130% at 50% 100%,#000 68%,transparent 93%)}
 
 /* ---------- 3. invitation page ---------- */
 .invitation{min-height:100dvh;background:#fdfaf3;display:flex;align-items:center;justify-content:center;padding:9dvh 0;overflow:hidden}
@@ -73,16 +74,20 @@ section,header{position:relative}
 .lang-hi .inv-events-head{font-family:"Noto Serif Devanagari",serif;font-weight:600}
 .lang-en .inv-events-head{font-family:"Cinzel",serif;font-weight:700}
 
-/* ---------- 4. event cards ---------- */
-.events{background:linear-gradient(#fdfaf3,#f7efe2 60%,#fdfaf3);padding:8dvh 0 10dvh;display:flex;flex-direction:column;align-items:center;gap:9dvh;overflow:hidden}
-.card{position:relative;width:min(88vw,520px);background:#fffdf7;border:1px solid #efe3cd;border-radius:6px;box-shadow:0 18px 40px rgba(90,50,20,.18);padding:14px 14px 20px}
+/* ---------- 4. event cards : pinned deck, cards lift away one by one ---------- */
+.events{background:linear-gradient(#fdfaf3,#f7efe2 60%,#fdfaf3);padding:8dvh 0 0;display:flex;flex-direction:column;align-items:center;gap:9dvh}
+.events-sticky{position:sticky;top:0;height:100dvh;min-height:560px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:linear-gradient(#fdfaf3,#f3ece0)}
+.reveal-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.deck{position:relative;z-index:2;width:min(86vw,470px);height:100%;display:flex;align-items:center;justify-content:center}
+.card{position:relative;width:min(88vw,520px);background:#fffdf7;border:1px solid #efe3cd;border-radius:6px;box-shadow:0 18px 40px rgba(90,50,20,.18);padding:14px 14px 20px;will-change:transform}
 .card-stack,.card::before{content:"";position:absolute;inset:0;border-radius:6px;background:#fbf4e6;border:1px solid #eee0c6;z-index:-1}
 .card::before{transform:rotate(-2.4deg) translateY(-6px)}
 .card-stack{transform:rotate(1.8deg) translateY(-10px);box-shadow:0 8px 20px rgba(90,50,20,.08)}
 .card.tilt-l{transform:rotate(-1.6deg)}
 .card.tilt-r{transform:rotate(1.6deg)}
+.deck .card{position:absolute;width:100%}
 .card .art{border-radius:4px;overflow:hidden;aspect-ratio:4/5;background:#f6ead6}
-.card .art img{width:100%;height:100%;object-fit:cover}
+.card .art img,.card .art video{width:100%;height:100%;object-fit:cover;display:block}
 .card-text{padding-top:14px;text-align:center}
 .card-title{display:block;font-family:"Cinzel",serif;font-weight:700;font-size:clamp(1.9rem,7vw,2.6rem);line-height:1.1}
 .lang-hi .card-title{font-family:"Noto Serif Devanagari",serif;font-weight:700}
@@ -94,13 +99,13 @@ section,header{position:relative}
 .c-baan{color:#b8860b}.c-mayra{color:#d2691e}.c-mehndi{color:#2e7d32}.c-sangeet{color:#7b4b9e}
 .c-baraat{color:#b23227}.c-bhoj{color:#8d5a2b}.c-wedding{color:#a01428}
 
-/* ---------- 5. wedding reveal ---------- */
+/* ---------- 5. wedding reveal (legacy static layout) ---------- */
 .reveal{height:230dvh}
 .reveal-sticky{position:sticky;top:0;height:100dvh;overflow:hidden;display:flex;align-items:center;justify-content:center}
-.reveal-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .reveal-card{z-index:3}
-.courtyard{height:110dvh;min-height:600px;overflow:hidden}
-.courtyard-art{position:absolute;inset:0;width:100%;height:112%;object-fit:cover}
+/* ---------- 5b. courtyard ---------- */
+.courtyard{height:130dvh;overflow:hidden}
+.courtyard-art{position:absolute;inset:0;width:100%;height:115%;object-fit:cover}
 
 /* ---------- 6. story : maroon & gold ---------- */
 .story{position:relative;background:#7d1128 radial-gradient(circle at 50% 0%,#96162f,#6a0d20 75%);background-color:#7d1128;padding:11dvh 0 9dvh;overflow:hidden;color:#f6e3c1}
@@ -159,7 +164,17 @@ section,header{position:relative}
   .pillar{max-width:20vw}
   .invite-inner{padding:0 clamp(46px,15vw,90px)}
 }
+
+/* no-JS / no-GSAP fallback: plain stacked cards, videos still play */
+body.no-anim .events{height:auto!important}
+body.no-anim .events-sticky{position:static;height:auto;display:block;padding:8dvh 0}
+body.no-anim .reveal-art{position:relative;opacity:1;height:110dvh;margin-top:8dvh}
+body.no-anim .deck{height:auto;flex-direction:column;gap:9dvh;align-items:center}
+body.no-anim .card{position:relative}
 @media (prefers-reduced-motion:reduce){
   .hc1,.hc2,.story-lantern,.music-pill.playing .mp-note{animation:none}
   .petals{display:none}
+}
+@media (max-height:720px){
+  .deck{width:min(72vw,380px)}
 }
