@@ -33,7 +33,7 @@ EVENTS.forEach(function(e,i){
   f.className="card "+(i%2?"tilt-r":"tilt-l");
   if(deckMode)f.style.zIndex=EVENTS.length-i;
   f.innerHTML='<div class="card-stack" aria-hidden="true"></div>'+
-    '<div class="art"><video src="./assets/'+({'ev-baan':'1-ev-baan','ev-baraat':'2-ev-baraat','ev-mayra':'3-ev-mayra','ev-mehndi':'4-ev-mehndi','ev-sangeet':'6-ev-sangeet','ev-swaroochbhoj':'7-ev-swaroochbhoj','ev-wedding':'8-ev-wedding'}[e.img]||e.img)+'.mp4" poster="./assets/'+e.img+'.webp" muted loop playsinline preload="metadata" aria-label="'+e.en+'"></video></div>'+
+    '<div class="art"><video data-src="./assets/'+({'ev-baan':'1-ev-baan','ev-baraat':'2-ev-baraat','ev-mayra':'3-ev-mayra','ev-mehndi':'4-ev-mehndi','ev-sangeet':'6-ev-sangeet','ev-swaroochbhoj':'7-ev-swaroochbhoj','ev-wedding':'8-ev-wedding'}[e.img]||e.img)+'.mp4" poster="./assets/'+e.img+'.webp" muted loop playsinline preload="none" aria-label="'+e.en+'"></video></div>'+
     '<figcaption class="card-text">'+
     '<strong class="card-title '+e.cls+'" data-en="'+e.en+'" data-hi="'+e.hi+'"></strong>'+
     '<span class="card-when" data-en="'+e.enWhen+'" data-hi="'+e.hiWhen+'"></span>'+
@@ -43,10 +43,11 @@ EVENTS.forEach(function(e,i){
 var cards=Array.prototype.slice.call(deck.children);
 function playV(v){ if(v&&v.paused){var p=v.play(); if(p&&p.catch)p.catch(function(){});} }
 function pauseV(v){ if(v&&!v.paused)v.pause(); }
+function ensureV(v){ if(v&&!v.getAttribute("src")){var s=v.getAttribute("data-src");if(s){v.setAttribute("src",s);v.load();}} }
 /* legacy static layout: play whichever card is on screen */
 if(!deckMode&&"IntersectionObserver" in window){
   var vio=new IntersectionObserver(function(es){
-    es.forEach(function(en){var v=en.target.querySelector("video");if(!v)return;en.isIntersecting?playV(v):pauseV(v);});
+    es.forEach(function(en){var v=en.target.querySelector("video");if(!v)return;en.isIntersecting?(ensureV(v),playV(v)):pauseV(v);});
   },{threshold:.35});
   cards.forEach(function(c){vio.observe(c);});
 }
@@ -139,13 +140,17 @@ function mountYT(){
     }
   });
 }
-(function(){
+var ytBooted=false;
+function bootYT(){
+  if(ytBooted)return;ytBooted=true;
   var tag=document.createElement("script");tag.src="https://www.youtube.com/iframe_api";
   document.head.appendChild(tag);
   var old=window.onYouTubeIframeAPIReady;
   window.onYouTubeIframeAPIReady=function(){if(old)old();mountYT();};
   setTimeout(mountYT,2500);setTimeout(mountYT,6000);
-})();
+}
+window.addEventListener("load",function(){setTimeout(bootYT,3000);});
+document.addEventListener("pointerdown",function bootOnTap(){bootYT();document.removeEventListener("pointerdown",bootOnTap);});
 document.getElementById("musicPill").addEventListener("click",function(e){
   e.stopPropagation();
   if(!ytPlayer)return;
@@ -163,7 +168,7 @@ document.addEventListener("pointerdown",tapStart);
 window.addEventListener("load",function(){
   if(!window.gsap||!window.ScrollTrigger){
     document.body.classList.add("no-anim");
-    cards.forEach(function(c){var v=c.querySelector("video");if(v){v.autoplay=true;playV(v);}});
+    cards.forEach(function(c){var v=c.querySelector("video");if(v){ensureV(v);v.autoplay=true;playV(v);}});
     return;
   }
   gsap.registerPlugin(ScrollTrigger);
@@ -215,7 +220,8 @@ window.addEventListener("load",function(){
     lastActive=ix;
     cards.forEach(function(c,i){
       var v=c.querySelector("video");if(!v)return;
-      if(i===ix||i===ix+1)playV(v);else pauseV(v);
+      if(i===ix||i===ix+1){ensureV(v);playV(v);}else pauseV(v);
+      c.style.filter=(i===ix)?"brightness(1)":"brightness(.93)";
     });
   }
 
@@ -236,7 +242,7 @@ window.addEventListener("load",function(){
   for(var i=0;i<N;i++){
     var at=ENTRY+i*UNIT;
     tl.to(cards[i],{yPercent:-165,rotation:(i%2?10:-10),ease:"power1.in",duration:LIFT},at);
-    if(i+1<N)tl.to(cards[i+1],{scale:1,filter:"brightness(1)",ease:"power1.out",duration:LIFT},at);
+    if(i+1<N)tl.to(cards[i+1],{scale:1,ease:"power1.out",duration:LIFT},at);
   }
   /* final card lifts: temple scene fades in beneath, then settles */
   var wedAt=ENTRY+(N-1)*UNIT;
@@ -263,3 +269,4 @@ window.addEventListener("load",function(){
     scrollTrigger:{trigger:"#venue",start:"top 70%"}});
 });
 })();
+
