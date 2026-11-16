@@ -211,3 +211,15 @@ body,.events,.events-sticky,.invitation{background:#fff}
 @media(min-width:760px){.invite-inner{width:31%;max-width:340px}}
 
 .inv-deities{width:82%;margin-left:auto;margin-right:auto}
+/* Keep both languages inside the arch opening on wide screens. */
+@media(min-width:760px){
+.invitation{min-height:1100px;padding:360px 0 300px}
+.invite-inner{width:280px;max-width:280px}
+.inv-deities{font-size:.78rem;line-height:1.65}
+.inv-shloka{font-size:.9rem;line-height:1.6}
+.inv-names{font-size:2.15rem;margin:22px 0 18px}
+.inv-line{font-size:.9rem;line-height:1.7}
+.inv-events-head{font-size:1.1rem;line-height:1.45;margin-top:20px}
+}
+/* Vector music mark avoids device-dependent emoji glyphs. */
+.music-pill .mp-note{font-size:0;display:block;width:16px;height:16px;background:center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23ffe9c9' d='M9 4v12.2A4 4 0 1 0 11 20V8l9-2v8.2A4 4 0 1 0 22 18V1z'/%3E%3C/svg%3E")}
