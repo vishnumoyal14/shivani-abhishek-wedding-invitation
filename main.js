@@ -12365,37 +12365,37 @@ Please change the parent <Route path="${parentPath}"> to <Route path="${parentPa
   var import_react30 = __toESM(require_react());
 
   // src/photos/hero-temple.webp
-  var hero_temple_default = "./SBGBY7QO.webp";
+  var hero_temple_default = "./assets/SBGBY7QO.webp";
 
   // src/photos/ganesh-arch.webp
-  var ganesh_arch_default = "./ZOUWYALD.webp";
+  var ganesh_arch_default = "./assets/ZOUWYALD.webp";
 
   // src/photos/ev-haldi.webp
-  var ev_haldi_default = "./S3KGUKH6.webp";
+  var ev_haldi_default = "./assets/S3KGUKH6.webp";
 
   // src/photos/scene-palace.webp
-  var scene_palace_default = "./2WI7VHCO.webp";
+  var scene_palace_default = "./assets/2WI7VHCO.webp";
 
   // src/photos/ev-mehndi.webp
-  var ev_mehndi_default = "./XMNWCZDI.webp";
+  var ev_mehndi_default = "./assets/XMNWCZDI.webp";
 
   // src/photos/ev-sangeet.webp
-  var ev_sangeet_default = "./EN74O4XX.webp";
+  var ev_sangeet_default = "./assets/EN74O4XX.webp";
 
   // src/photos/ev-wedding.webp
-  var ev_wedding_default = "./CQMRRUSB.webp";
+  var ev_wedding_default = "./assets/CQMRRUSB.webp";
 
   // src/photos/ev-baraat.webp
-  var ev_baraat_default = "./2US2UZQE.webp";
+  var ev_baraat_default = "./assets/2US2UZQE.webp";
 
   // src/photos/ev-swaroochbhoj.webp
-  var ev_swaroochbhoj_default = "./SPXV326K.webp";
+  var ev_swaroochbhoj_default = "./assets/SPXV326K.webp";
 
   // src/photos/story-couple.webp
-  var story_couple_default = "./7QMFBZL6.webp";
+  var story_couple_default = "./assets/7QMFBZL6.webp";
 
   // src/photos/divider-lotus.png
-  var divider_lotus_default = "./SBW4Y6NB.png";
+  var divider_lotus_default = "./assets/SBW4Y6NB.png";
 
   // src/App.tsx
   var import_jsx_runtime26 = __toESM(require_jsx_runtime());
@@ -12435,14 +12435,35 @@ Please change the parent <Route path="${parentPath}"> to <Route path="${parentPa
         if (cancelled || !w2.YT?.Player) return;
         playerRef.current = new w2.YT.Player("yt-music-frame", {
           videoId: MUSIC_IDS[idIndex.current],
-          playerVars: { autoplay: 1, mute: 1, loop: 1, playlist: MUSIC_IDS[idIndex.current], playsinline: 1, controls: 0, disablekb: 1, fs: 0, rel: 0 },
+          height: "100%",
+          width: "100%",
+          playerVars: { autoplay: 1, mute: 1, loop: 1, playlist: MUSIC_IDS[idIndex.current], playsinline: 1, controls: 1, rel: 0 },
           events: {
             onReady: (e2) => {
+              try {
+                e2.target.unMute();
+                e2.target.setVolume(70);
+              } catch {
+              }
               e2.target.playVideo();
+              setTimeout(() => {
+                const p2 = playerRef.current;
+                if (!p2?.getPlayerState) return;
+                const playing = p2.getPlayerState() === w2.YT?.PlayerState?.PLAYING;
+                if (!playing || p2.isMuted?.()) {
+                  try {
+                    p2.mute();
+                  } catch {
+                  }
+                  ;
+                  p2.playVideo();
+                }
+              }, 2500);
             },
             onStateChange: (e2) => {
               if (e2.data === w2.YT.PlayerState.PLAYING) {
-                setState((s) => s === "on" ? "on" : "muted");
+                const p2 = playerRef.current;
+                setState(p2?.isMuted?.() ? "muted" : "on");
               }
             },
             onError: () => {
@@ -12502,12 +12523,18 @@ Please change the parent <Route path="${parentPath}"> to <Route path="${parentPa
         setState("on");
       }
     };
-    return /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(import_jsx_runtime26.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { className: "yt-hidden", "aria-hidden": true, children: /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { id: "yt-music-frame" }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("button", { type: "button", className: "music-pill" + (state === "on" ? " playing" : ""), onClick: toggle, "aria-label": "Toggle music", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("span", { className: "note", children: state === "on" ? "\u{1F3B5}" : "\u{1F507}" }),
-        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("span", { className: "track", children: "Mangal Rang" })
-      ] })
+    return /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(import_jsx_runtime26.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("button", { type: "button", className: "music-pill" + (state === "on" ? " playing" : ""), onClick: toggle, "aria-label": "Toggle music", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("span", { className: "note", children: state === "on" ? "\u{1F3B5}" : "\u{1F507}" }),
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("span", { className: "track", children: "Mangal Rang" })
+    ] }) });
+  }
+  function SongSection({ hi: hi2 }) {
+    return /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("section", { className: "song", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("h2", { className: "sec-title", children: hi2 ? "\u0935\u0948\u0935\u093E\u0939\u093F\u0915 \u0917\u0940\u0924" : "Wedding Song" }),
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("p", { className: "song-title", children: "Mangal Rang" }),
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("p", { className: "song-credit", children: "Ramayana \u2022 A.R. Rahman \u2022 Arijit Singh, Shreya Ghoshal" }),
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { className: "song-frame", children: /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { id: "yt-music-frame" }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("p", { className: "song-hint", children: hi2 ? "\u0917\u0940\u0924 \u092C\u091C\u093E\u0928\u0947 \u0915\u0947 \u0932\u093F\u090F \u0938\u094D\u0915\u094D\u0930\u0940\u0928 \u092A\u0930 \u0915\u0939\u0940\u0902 \u092D\u0940 \u091F\u0948\u092A \u0915\u0930\u0947\u0902" : "Tap anywhere on the page to hear the song" })
     ] });
   }
   function App() {
@@ -12545,7 +12572,7 @@ Please change the parent <Route path="${parentPath}"> to <Route path="${parentPa
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { className: "hero-inner", children: [
           /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("p", { className: "hero-blessing", children: "\u0965 \u0936\u094D\u0930\u0940 \u0917\u0923\u0947\u0936\u093E\u092F \u0928\u092E\u0903 \u0965" }),
-          /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("p", { className: "hero-shubh", children: hi2 ? "\u0965 \u0936\u0941\u092D \u0935\u093F\u0935\u093E\u0939 \u0965" : "Shubh Vivah" }),
+          /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("p", { className: "hero-shubh", children: hi2 ? "\u0965 \u0935\u093F\u0935\u093E\u0939 \u0965" : "The Wedding" }),
           /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("h1", { className: "hero-names", children: [
             hi2 ? "\u0936\u093F\u0935\u093E\u0928\u0940" : "Shivani",
             /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("span", { className: "hero-amp", children: hi2 ? " \u0938\u0902\u0917 " : " weds " }),
@@ -12597,6 +12624,7 @@ Please change the parent <Route path="${parentPath}"> to <Route path="${parentPa
           ] })
         ] })
       ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(SongSection, { hi: hi2 }),
       /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("section", { className: "venue", children: [
         /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("h2", { className: "sec-title", children: hi2 ? "\u0935\u0948\u0935\u093E\u0939\u093F\u0915 \u0938\u094D\u0925\u0932" : "Venue" }),
         /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("p", { className: "venue-name", children: hi2 ? "\u0924\u0947\u0930\u093E\u092A\u0902\u0925 \u0938\u092D\u093E \u092D\u0935\u0928" : "Terapanth Sabha Bhawan" }),

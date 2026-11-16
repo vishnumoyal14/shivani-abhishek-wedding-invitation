@@ -746,28 +746,28 @@ body {
 }
 @font-face {
   font-family: GT America;
-  src: url("2L3TNOC4.woff2") format("woff2");
+  src: url("assets/2L3TNOC4.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: GT America;
-  src: url("GWBPHQBQ.woff2") format("woff2");
+  src: url("assets/GWBPHQBQ.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: GT America;
-  src: url("6HBTCF3E.woff2") format("woff2");
+  src: url("assets/6HBTCF3E.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: Season Mix;
-  src: url("7UAGB34N.woff2") format("woff2");
+  src: url("assets/7UAGB34N.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -775,7 +775,7 @@ body {
 }
 @font-face {
   font-family: Season Mix;
-  src: url("ZITNQAWX.woff2") format("woff2");
+  src: url("assets/ZITNQAWX.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -783,28 +783,28 @@ body {
 }
 @font-face {
   font-family: Aime;
-  src: url("RK4X2PXO.woff2") format("woff2");
+  src: url("assets/RK4X2PXO.woff2") format("woff2");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: Aime;
-  src: url("E34RMFMI.woff2") format("woff2");
+  src: url("assets/E34RMFMI.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: Aime;
-  src: url("DCUCO6EG.woff2") format("woff2");
+  src: url("assets/DCUCO6EG.woff2") format("woff2");
   font-weight: 800;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: KMR Melange Grotesk;
-  src: url("WM77GZQE.ttf") format("truetype");
+  src: url("assets/WM77GZQE.ttf") format("truetype");
   font-weight: 350;
   font-style: normal;
   font-display: swap;
@@ -812,7 +812,7 @@ body {
 }
 @font-face {
   font-family: KMR Melange Grotesk;
-  src: url("EDUFJISK.woff2") format("woff2");
+  src: url("assets/EDUFJISK.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -820,7 +820,7 @@ body {
 }
 @font-face {
   font-family: KMR Melange Grotesk;
-  src: url("ESVYJHOG.woff2") format("woff2");
+  src: url("assets/ESVYJHOG.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -828,7 +828,7 @@ body {
 }
 @font-face {
   font-family: KMR Melange Grotesk;
-  src: url("PQNVRRKH.otf") format("opentype");
+  src: url("assets/PQNVRRKH.otf") format("opentype");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -1066,7 +1066,7 @@ body {
 }
 @font-face {
   font-family: Aime;
-  src: url("KZYIEKM3.woff2") format("woff2");
+  src: url("assets/KZYIEKM3.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -4622,5 +4622,41 @@ button.file-compare-head {
 }
 .langbar {
   top: 60px;
+}
+.song {
+  padding: 40px 20px 8px;
+  text-align: center;
+}
+.song-title {
+  font-size: clamp(20px, 5.4vw, 26px);
+  font-weight: 700;
+  font-style: italic;
+  color: #a01226;
+  margin: 0;
+}
+.song-credit {
+  color: #8a5a13;
+  font-size: 13.5px;
+  margin: 4px 0 16px;
+}
+.song-frame {
+  width: min(92vw, 520px);
+  aspect-ratio: 16/9;
+  margin: 0 auto;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(90, 26, 18, .22);
+  background: #000;
+}
+.song-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+.song-hint {
+  color: #8a6a45;
+  font-size: 12.5px;
+  margin-top: 10px;
 }
 /*! tailwindcss v3.4.19 | MIT License | https://tailwindcss.com*/
