@@ -37,7 +37,9 @@
 </header>
 
 <section class="temple" id="temple">
-  <img class="temple-art" src="./assets/temple-scene.webp" alt="Temple">
+  <div class="temple-sticky">
+    <img class="temple-art" src="./assets/temple-scene.webp" alt="Temple">
+  </div>
 </section>
 
 <section class="invitation" id="invitation">
@@ -52,20 +54,10 @@
   </div>
 </section>
 
-<section class="events" id="events"></section>
-
-<section class="reveal" id="reveal">
-  <div class="reveal-sticky">
+<section class="events" id="events">
+  <div class="events-sticky">
     <img class="reveal-art" src="./assets/wedding-reveal.webp" alt="Wedding temple">
-    <figure class="reveal-card card tilt-r" id="revealCard">
-      <div class="card-stack" aria-hidden="true"></div>
-      <div class="art"><img src="./assets/ev-wedding.webp" alt="Wedding"></div>
-      <figcaption class="card-text">
-        <strong class="card-title c-wedding" data-en="Wedding" data-hi="पाणिग्रहण संस्कार"></strong>
-        <span class="card-when" data-en="Wednesday, 02 December 2026 • Shubh Muhurat (Night)" data-hi="बुधवार, 02 दिसंबर 2026 • रात्रि शुभ लग्न में"></span>
-        <span class="card-venue" data-en="Terapanth Sabha Bhawan, Sujangarh" data-hi="तेरापंथ सभा भवन, सूजानगढ़"></span>
-      </figcaption>
-    </figure>
+    <div class="deck" id="deck"></div>
   </div>
 </section>
 
