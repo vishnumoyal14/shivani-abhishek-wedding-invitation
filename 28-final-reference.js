@@ -116,7 +116,7 @@ document.addEventListener("pointerdown",function(){gesture=true;bootYT();if(want
 pill.addEventListener("click",function(e){e.stopPropagation();gesture=true;wantsSound=!pill.classList.contains("playing");if(wantsSound)startMusic();else{try{ytPlayer.mute();}catch(_){}syncMusic();}});
 /* One scroll position controls the camera and incoming-card stack. */
 var opening=document.getElementById('opening'),events=document.getElementById('events'),court=document.getElementById('courtyard');
-var entry=.55,unit=1.05,travel=.68,exit=.9,N=cards.length,total=entry+(N-1)*unit+unit+exit;
+var entry=.5,unit=.85,travel=.7,exit=.7,N=cards.length,total=entry+(N-1)*unit+unit+exit;
 events.style.height=((total+1)*100)+'svh';
 var lastIx=-10,queued=false;
 var clamp=function(x,a,b){return Math.min(b,Math.max(a,x));};
