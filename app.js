@@ -9,7 +9,8 @@ var EVENTS=[
  {img:"ev-mehndi", cls:"c-mehndi", en:"Mehndi", hi:"मेहंदी",        enWhen:"Tuesday, 01 December 2026 • 4.15 PM",  hiWhen:"मंगलवार, 01 दिसंबर 2026 • सांय 4.15 बजे",      enV:"Terapanth Sabha Bhawan, Sujangarh",  hiV:"तेरापंथ सभा भवन, सूजानगढ़"},
  {img:"ev-sangeet",cls:"c-sangeet",en:"Sangeet",hi:"संगीत संध्या",  enWhen:"Tuesday, 01 December 2026 • Evening",  hiWhen:"मंगलवार, 01 दिसंबर 2026 • रात्रि वेला में",    enV:"Terapanth Sabha Bhawan, Sujangarh",  hiV:"तेरापंथ सभा भवन, सूजानगढ़"},
  {img:"ev-baraat", cls:"c-baraat", en:"Baraat", hi:"बारात आगमन",    enWhen:"Wednesday, 02 December 2026 • 4.15 PM, by bus from Jodhpur", hiWhen:"बुधवार, 02 दिसंबर 2026 • सांय 4.15 बजे, बस द्वारा जोधपुर से", enV:"Terapanth Sabha Bhawan, Sujangarh", hiV:"तेरापंथ सभा भवन, सूजानगढ़"},
- {img:"ev-swaroochbhoj",cls:"c-bhoj",en:"Swarooch Bhoj",hi:"स्वरूचिभोज", enWhen:"Wednesday, 02 December 2026 • from 6.15 PM", hiWhen:"बुधवार, 02 दिसंबर 2026 • सांय 6.15 बजे से", enV:"Terapanth Sabha Bhawan, Sujangarh", hiV:"तेरापंथ सभा भवन, सूजानगढ़"}
+ {img:"ev-swaroochbhoj",cls:"c-bhoj",en:"Swarooch Bhoj",hi:"स्वरूचिभोज", enWhen:"Wednesday, 02 December 2026 • from 6.15 PM", hiWhen:"बुधवार, 02 दिसंबर 2026 • सांय 6.15 बजे से", enV:"Terapanth Sabha Bhawan, Sujangarh", hiV:"तेरापंथ सभा भवन, सूजानगढ़"},
+ {img:"ev-wedding",cls:"c-wedding",en:"Wedding",hi:"पाणिग्रहण संस्कार", enWhen:"Wednesday, 02 December 2026 • Shubh Muhurat (Night)", hiWhen:"बुधवार, 02 दिसंबर 2026 • रात्रि शुभ लग्न में", enV:"Terapanth Sabha Bhawan, Sujangarh", hiV:"तेरापंथ सभा भवन, सूजानगढ़"}
 ];
 var STORY=[
  {n:"Shivani",hn:"आयुष्मती शिवानी",
@@ -23,19 +24,32 @@ var STORY=[
 ];
 var WEDDING_AT=new Date("2026-12-02T18:15:00+05:30").getTime();
 
-/* ---------- event cards ---------- */
-var evHost=document.getElementById("events");
+/* ---------- event card deck ---------- */
+var deckEl=document.getElementById("deck");
+var deckMode=!!deckEl;
+var deck=deckEl||document.getElementById("events");
 EVENTS.forEach(function(e,i){
   var f=document.createElement("figure");
   f.className="card "+(i%2?"tilt-r":"tilt-l");
+  if(deckMode)f.style.zIndex=EVENTS.length-i;
   f.innerHTML='<div class="card-stack" aria-hidden="true"></div>'+
-    '<div class="art"><img src="./assets/'+e.img+'.webp" alt="'+e.en+'" loading="lazy"></div>'+
+    '<div class="art"><video src="./assets/'+e.img+'.mp4" poster="./assets/'+e.img+'.webp" muted loop playsinline preload="metadata" aria-label="'+e.en+'"></video></div>'+
     '<figcaption class="card-text">'+
     '<strong class="card-title '+e.cls+'" data-en="'+e.en+'" data-hi="'+e.hi+'"></strong>'+
     '<span class="card-when" data-en="'+e.enWhen+'" data-hi="'+e.hiWhen+'"></span>'+
     '<span class="card-venue" data-en="'+e.enV+'" data-hi="'+e.hiV+'"></span></figcaption>';
-  evHost.appendChild(f);
+  deck.appendChild(f);
 });
+var cards=Array.prototype.slice.call(deck.children);
+function playV(v){ if(v&&v.paused){var p=v.play(); if(p&&p.catch)p.catch(function(){});} }
+function pauseV(v){ if(v&&!v.paused)v.pause(); }
+/* legacy static layout: play whichever card is on screen */
+if(!deckMode&&"IntersectionObserver" in window){
+  var vio=new IntersectionObserver(function(es){
+    es.forEach(function(en){var v=en.target.querySelector("video");if(!v)return;en.isIntersecting?playV(v):pauseV(v);});
+  },{threshold:.35});
+  cards.forEach(function(c){vio.observe(c);});
+}
 
 /* ---------- story columns ---------- */
 var sc=document.getElementById("storyCols");
@@ -147,7 +161,11 @@ document.addEventListener("pointerdown",tapStart);
 
 /* ---------- scroll animations (GSAP if available) ---------- */
 window.addEventListener("load",function(){
-  if(!window.gsap||!window.ScrollTrigger)return;
+  if(!window.gsap||!window.ScrollTrigger){
+    document.body.classList.add("no-anim");
+    cards.forEach(function(c){var v=c.querySelector("video");if(v){v.autoplay=true;playV(v);}});
+    return;
+  }
   gsap.registerPlugin(ScrollTrigger);
 
   /* hero intro */
@@ -156,11 +174,13 @@ window.addEventListener("load",function(){
   gsap.from(".hero-sub",{y:26,opacity:0,duration:1,ease:"power2.out",delay:.75});
   gsap.from(".hero-date",{y:20,opacity:0,duration:1,ease:"power2.out",delay:.95});
 
-  /* hero parallax out, temple parallax in */
+  /* hero parallax out */
   gsap.to(".hero-inner",{yPercent:-24,opacity:.15,ease:"none",
     scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}});
-  gsap.fromTo(".temple-art",{yPercent:-10},{yPercent:0,ease:"none",
-    scrollTrigger:{trigger:"#temple",start:"top bottom",end:"bottom top",scrub:true}});
+
+  /* temple grows from the sky as it enters, then keeps breathing while pinned */
+  gsap.fromTo(".temple-art",{scale:.55},{scale:1.14,ease:"none",
+    scrollTrigger:{trigger:"#temple",start:"top bottom",end:"bottom bottom",scrub:true}});
 
   /* invitation */
   gsap.from(".pillar-l",{xPercent:-70,opacity:0,duration:1.2,ease:"power2.out",
@@ -170,20 +190,62 @@ window.addEventListener("load",function(){
   gsap.from(".invite-inner > *",{y:34,opacity:0,stagger:.14,duration:.9,ease:"power2.out",
     scrollTrigger:{trigger:"#invitation",start:"top 62%"}});
 
-  /* event cards */
-  gsap.utils.toArray(".events .card").forEach(function(card){
-    gsap.from(card,{y:90,opacity:0,rotate:0,duration:1,ease:"power3.out",
-      scrollTrigger:{trigger:card,start:"top 82%"}});
-  });
+  /* ---------- event deck : cards lift away one by one, last reveals temple ---------- */
+  if(!deckMode){
+    /* legacy static layout on old HTML: simple entrances */
+    gsap.utils.toArray(".events .card").forEach(function(card){
+      gsap.from(card,{y:90,opacity:0,rotate:0,duration:1,ease:"power3.out",
+        scrollTrigger:{trigger:card,start:"top 82%"}});
+    });
+  }else{
+  var N=cards.length;
+  var ENTRY=.6,UNIT=1.05,LIFT=.7,SETTLE=1.25;
+  var TOTAL=ENTRY+UNIT*N+SETTLE;
+  document.getElementById("events").style.height=(TOTAL*100)+"dvh";
 
-  /* wedding card lifts to reveal temple */
-  var lift=gsap.timeline({scrollTrigger:{trigger:"#reveal",start:"top top",end:"bottom bottom",scrub:.6}});
-  lift.to("#revealCard",{yPercent:-135,rotate:-7,ease:"power1.in",duration:1});
-  gsap.fromTo(".reveal-art",{scale:1.12},{scale:1,ease:"none",
-    scrollTrigger:{trigger:"#reveal",start:"top bottom",end:"bottom top",scrub:true}});
+  cards.forEach(function(c,i){
+    gsap.set(c,{rotation:(i%2?1.8:-1.8),transformOrigin:"50% 60%"});
+    if(i>0)gsap.set(c,{scale:.94,filter:"brightness(.93)"});
+  });
+  gsap.set(".reveal-art",{opacity:0,scale:1.14});
+
+  var lastActive=-1;
+  function setActive(ix){
+    if(ix===lastActive)return;
+    lastActive=ix;
+    cards.forEach(function(c,i){
+      var v=c.querySelector("video");if(!v)return;
+      if(i===ix||i===ix+1)playV(v);else pauseV(v);
+    });
+  }
+
+  var tl=gsap.timeline({scrollTrigger:{
+    trigger:"#events",start:"top top",end:"bottom bottom",scrub:.5,
+    onUpdate:function(self){
+      var t=self.progress*TOTAL;
+      var ix=t<ENTRY?0:Math.min(N-1,Math.floor((t-ENTRY)/UNIT));
+      setActive(ix);
+    },
+    onLeave:function(){cards.forEach(function(c){pauseV(c.querySelector("video"));});},
+    onLeaveBack:function(){cards.forEach(function(c){pauseV(c.querySelector("video"));});lastActive=-1;}
+  }});
+
+  /* deck rises into view */
+  tl.from("#deck",{y:"62vh",opacity:0,ease:"power1.out",duration:ENTRY},0);
+  /* each card lifts up and away, next one grows into place */
+  for(var i=0;i<N;i++){
+    var at=ENTRY+i*UNIT;
+    tl.to(cards[i],{yPercent:-165,rotation:(i%2?10:-10),ease:"power1.in",duration:LIFT},at);
+    if(i+1<N)tl.to(cards[i+1],{scale:1,filter:"brightness(1)",ease:"power1.out",duration:LIFT},at);
+  }
+  /* final card lifts: temple scene fades in beneath, then settles */
+  var wedAt=ENTRY+(N-1)*UNIT;
+  tl.to(".reveal-art",{opacity:1,ease:"power1.out",duration:LIFT},wedAt);
+  tl.to(".reveal-art",{scale:1,ease:"none",duration:LIFT+SETTLE},wedAt);
+  }
 
   /* courtyard parallax */
-  gsap.fromTo(".courtyard-art",{yPercent:-10},{yPercent:0,ease:"none",
+  gsap.fromTo(".courtyard-art",{yPercent:-11},{yPercent:0,ease:"none",
     scrollTrigger:{trigger:"#courtyard",start:"top bottom",end:"bottom top",scrub:true}});
 
   /* story */
