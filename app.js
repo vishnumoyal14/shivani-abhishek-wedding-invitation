@@ -33,7 +33,7 @@ EVENTS.forEach(function(e,i){
   f.className="card "+(i%2?"tilt-r":"tilt-l");
   if(deckMode)f.style.zIndex=EVENTS.length-i;
   f.innerHTML='<div class="card-stack" aria-hidden="true"></div>'+
-    '<div class="art"><video src="./assets/'+e.img+'.mp4" poster="./assets/'+e.img+'.webp" muted loop playsinline preload="metadata" aria-label="'+e.en+'"></video></div>'+
+    '<div class="art"><video src="./assets/'+({'ev-baan':'1-ev-baan','ev-baraat':'2-ev-baraat','ev-mayra':'3-ev-mayra','ev-mehndi':'4-ev-mehndi','ev-sangeet':'6-ev-sangeet','ev-swaroochbhoj':'7-ev-swaroochbhoj','ev-wedding':'8-ev-wedding'}[e.img]||e.img)+'.mp4" poster="./assets/'+e.img+'.webp" muted loop playsinline preload="metadata" aria-label="'+e.en+'"></video></div>'+
     '<figcaption class="card-text">'+
     '<strong class="card-title '+e.cls+'" data-en="'+e.en+'" data-hi="'+e.hi+'"></strong>'+
     '<span class="card-when" data-en="'+e.enWhen+'" data-hi="'+e.hiWhen+'"></span>'+
